@@ -1,0 +1,5 @@
+# Masukkan URL postingan Threads yang ingin di-scrape (satu URL per baris).
+# Contoh format URL Threads:
+# https://www.threads.net/@nama_pengguna/post/ID_POSTINGAN
+
+# Tambahkan URL postingan Threads Anda di bawah ini:
