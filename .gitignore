@@ -1,5 +1,7 @@
 # Sessions & Credentials (Do NOT expose on public repo)
 threads_session.json
+twitter_session.json
+.twitter_user_data/
 *.env
 .env
 
@@ -30,6 +32,12 @@ venv/
 env/
 .venv/
 ENV/
+
+# Backups, proposals & temporary files
+* - Copy*
+* copy*
+*_temp.csv
+proposal hybird/
 
 # IDE & OS
 .vscode/

@@ -1,0 +1,11 @@
+# Masukkan URL postingan Reddit yang ingin di-scrape (satu URL per baris).
+# Mendukung format penomoran ('1. https://...', '2) ...'), bullet ('- ...'),
+# domain reddit.com, old.reddit.com, maupun shortlink redd.it.
+#
+# Contoh format URL Reddit:
+# https://www.reddit.com/r/indonesia/comments/1ch6abc/judul_postingan/
+# https://www.reddit.com/r/mentalhealth/comments/xyz123/
+# https://redd.it/1ch6abc
+#
+# Tambahkan daftar URL postingan Reddit Anda di bawah ini:
+

@@ -1,0 +1,355 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-error":"#690005","error-container":"#93000a","on-surface":"#dae2fd","primary":"#93ccff","on-tertiary-fixed-variant":"#5516be","on-primary-container":"#002c47","tertiary-container":"#a078ff","inverse-surface":"#dae2fd","on-tertiary-fixed":"#23005c","error":"#ffb4ab","on-primary":"#003351","on-background":"#dae2fd","secondary":"#4edea3","surface-dim":"#0b1326","surface-variant":"#2d3449","on-secondary-fixed-variant":"#005236","inverse-primary":"#006398","surface-container-highest":"#2d3449","surface-container-high":"#222a3d","on-secondary":"#003824","primary-fixed-dim":"#93ccff","secondary-container":"#00a572","surface-container-low":"#131b2e","surface-tint":"#93ccff","outline":"#89929b","surface-bright":"#31394d","primary-fixed":"#cce5ff","background":"#0b1326","tertiary-fixed":"#e9ddff","on-secondary-container":"#00311f","on-primary-fixed":"#001d31","on-surface-variant":"#bfc7d2","on-error-container":"#ffdad6","surface":"#0b1326","on-tertiary":"#3c0091","on-tertiary-container":"#340080","tertiary":"#d0bcff","secondary-fixed":"#6ffbbe","inverse-on-surface":"#283044","outline-variant":"#3f4850","tertiary-fixed-dim":"#d0bcff","on-secondary-fixed":"#002113","surface-container-lowest":"#060e20","surface-container":"#171f33","secondary-fixed-dim":"#4edea3","primary-container":"#3198dc","on-primary-fixed-variant":"#004b73"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-2xs":"0.125rem","space-xl":"1.5rem","space-lg":"1rem","margin":"1rem","margin-desktop":"1.5rem","gutter-desktop":"1.5rem","space-2xl":"2rem","space-xs":"0.25rem","space-sm":"0.5rem","gutter":"1rem","space-md":"0.75rem"},"fontFamily":{"headline-sm":["Inter"],"label-sm":["Inter"],"body-sm":["Inter"],"body-md":["Inter"],"code-sm":["JetBrains Mono"],"headline-xl-mobile":["Inter"],"headline-lg":["Inter"],"body-lg":["Inter"],"code-body":["JetBrains Mono"],"headline-xl":["Inter"],"kbd-badge":["JetBrains Mono"]},"fontSize":{"headline-sm":["18px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"20px","letterSpacing":"0em","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"22px","letterSpacing":"0em","fontWeight":"400"}],"code-sm":["12px",{"lineHeight":"18px","letterSpacing":"0em","fontWeight":"500"}],"headline-xl-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"28px","letterSpacing":"-0.005em","fontWeight":"400"}],"code-body":["13px",{"lineHeight":"22px","letterSpacing":"-0.01em","fontWeight":"400"}],"headline-xl":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"600"}],"kbd-badge":["11px",{"lineHeight":"14px","letterSpacing":"0.02em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-14 w-full px-gutter-desktop flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-xl"><nav class="hidden sm:flex items-center gap-space-xs" data-active-classes="bg-surface-container-high text-on-surface font-bold rounded-lg"><a aria-current="page" class="px-space-md py-space-xs transition-colors bg-surface-container-high text-on-surface font-bold rounded-lg" data-path="labeling-workspace" href="#">Label</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-colors" data-path="batch-queue" href="#">Queue</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-colors" data-path="label-taxonomy" href="#">Schema</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-colors" data-path="export-insights" href="#">Export</a></nav></div><div class="flex items-center gap-space-lg"><div class="hidden md:flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-xs rounded-xl"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Progress</span><span class="font-code-sm text-code-sm text-secondary font-bold">142 / 500</span></div><div class="hidden lg:flex items-center gap-space-xs text-on-surface-variant font-code-sm text-code-sm bg-surface-container-low px-space-md py-space-xs rounded-xl"><kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs bg-surface-container-highest text-primary rounded-sm">[1-9]</kbd><span class="font-label-sm text-label-sm text-on-surface-variant">Tag</span><kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs bg-surface-container-highest text-primary rounded-sm ml-space-xs">[E]</kbd><span class="font-label-sm text-label-sm text-on-surface-variant">Next</span></div><button class="h-8 px-space-md rounded-lg bg-primary text-on-primary font-label-sm text-label-sm flex items-center gap-space-xs hover:bg-primary-fixed-dim transition-colors"><span class="material-symbols-outlined text-[16px]">file_download</span><span class="">Export</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-14 bg-surface"><div class="flex flex-col w-full">
+<div class="w-full max-w-4xl mx-auto px-gutter py-space-xl flex flex-col gap-space-xl">
+<div class="flex items-center justify-between px-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full bg-surface-container-high text-on-surface-variant font-code-sm text-code-sm">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          Data #142 dari 500
+        </span>
+<span class="inline-flex items-center px-space-md py-space-2xs rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider" id="sample-status-pill">
+          Belum Dilabeli
+        </span>
+</div>
+<div class="flex items-center gap-space-md text-on-surface-variant font-code-sm text-code-sm">
+<span class="hidden sm:inline">Akurasi Anotator: <span class="text-secondary font-bold">99.4%</span></span>
+<div class="w-24 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 28.4%"></div>
+</div>
+</div>
+</div>
+<section class="bg-surface-container rounded-xl shadow-xl p-space-xl sm:p-space-2xl relative flex flex-col gap-space-lg transition-all duration-200">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="tracking-widest uppercase text-outline">Korpus Teks Aktif</span>
+<span class="flex items-center gap-space-xs font-code-sm text-code-sm">
+<span class="material-symbols-outlined text-[15px]">timer</span>
+<span id="session-timer" class="">49:22s</span>
+</span>
+</div>
+<blockquote class="font-headline-lg text-headline-lg sm:font-headline-xl sm:text-headline-xl text-on-surface font-normal leading-relaxed selection:bg-primary-container selection:text-on-primary-container">
+        “Pelayanan sangat ramah dan pesanan sampai dalam waktu kurang dari 24 jam dengan kemasan rapi tanpa cacat sama sekali.”
+      </blockquote>
+<div class="flex flex-wrap items-center justify-between gap-space-md pt-space-xs">
+<div class="flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">feed</span>
+<span class="">Sumber: <strong class="text-on-surface font-medium">Ulasan Pengguna</strong></span>
+<span class="">•</span>
+<span class="font-code-sm text-code-sm">118 Karakter</span>
+<span class="">•</span>
+<span class="font-code-sm text-code-sm">17 Kata</span>
+</div>
+<div class="flex items-center gap-space-xs min-h-[32px]" id="active-tag-container">
+<span class="text-on-surface-variant font-label-sm text-label-sm italic" id="no-tag-prompt">
+            Belum ada label terpilih
+          </span>
+<div class="hidden items-center gap-space-xs px-space-md py-space-2xs rounded-lg font-label-sm text-label-sm transition-all duration-150 shadow-sm" id="selected-badge">
+<span class="font-bold" id="selected-badge-label"></span>
+<button aria-label="Hapus Label" class="ml-space-2xs p-space-2xs rounded-full hover:bg-surface/30 transition-colors flex items-center justify-center" id="btn-remove-tag">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between px-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">sell</span>
+<h2 class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
+            PILIH LABEL (Pintasan Keyboard 1 - 5)
+          </h2>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant hidden sm:inline">
+          Ketik angka <kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs bg-surface-container-high rounded text-primary">1-5</kbd> untuk memilih
+        </span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-space-sm" id="label-buttons-grid">
+<button class="label-choice group relative flex flex-col items-start p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all text-left shadow-sm" data-active-bg="bg-secondary" data-active-text="text-on-secondary" data-color-bg="bg-secondary-container/20" data-color-text="text-secondary" data-label-id="1" data-label-name="Positif" type="button">
+<div class="flex items-center justify-between w-full mb-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-highest text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">1</kbd>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-secondary transition-colors">Positif</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-2xs">Sentimen Baik</span>
+</button>
+<button class="label-choice group relative flex flex-col items-start p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all text-left shadow-sm" data-active-bg="bg-error" data-active-text="text-on-error" data-color-bg="bg-error-container/30" data-color-text="text-error" data-label-id="2" data-label-name="Negatif" type="button">
+<div class="flex items-center justify-between w-full mb-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-highest text-error group-hover:bg-error group-hover:text-on-error transition-colors">2</kbd>
+<span class="w-2 h-2 rounded-full bg-error"></span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-error transition-colors">Negatif</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-2xs">Kritik / Komplain</span>
+</button>
+<button class="label-choice group relative flex flex-col items-start p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all text-left shadow-sm" data-active-bg="bg-outline" data-active-text="text-surface-dim" data-color-bg="bg-surface-variant" data-color-text="text-on-surface" data-label-id="3" data-label-name="Netral" type="button">
+<div class="flex items-center justify-between w-full mb-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-highest text-on-surface group-hover:bg-on-surface group-hover:text-surface transition-colors">3</kbd>
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-outline transition-colors">Netral</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-2xs">Objektif Biasa</span>
+</button>
+<button class="label-choice group relative flex flex-col items-start p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all text-left shadow-sm" data-active-bg="bg-tertiary" data-active-text="text-on-tertiary" data-color-bg="bg-tertiary-container/30" data-color-text="text-tertiary" data-label-id="4" data-label-name="Keluhan Layanan" type="button">
+<div class="flex items-center justify-between w-full mb-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-highest text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">4</kbd>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-tertiary transition-colors">Keluhan</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-2xs">Isu Pengiriman/Staf</span>
+</button>
+<button class="label-choice group relative flex flex-col items-start p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all text-left shadow-sm" data-active-bg="bg-primary" data-active-text="text-on-primary" data-color-bg="bg-primary-container/30" data-color-text="text-primary" data-label-id="5" data-label-name="Pertanyaan / FAQ" type="button">
+<div class="flex items-center justify-between w-full mb-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-highest text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">5</kbd>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Tanya/FAQ</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-2xs">Inquiry Konsumen</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low text-on-surface-variant hover:text-primary transition-all text-center shadow-sm" id="btn-open-new-label" type="button">
+<div class="w-8 h-8 rounded-full bg-surface-container-high group-hover:bg-primary-container flex items-center justify-center mb-space-xs text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold">Tambah Label</span>
+<span class="font-code-sm text-code-sm text-outline mt-space-2xs">Kustom Baru</span>
+</button>
+</div>
+<div class="hidden bg-surface-container-high rounded-xl p-space-md flex-col sm:flex-row items-center gap-space-md transition-all shadow-md" id="quick-add-panel">
+<div class="flex items-center gap-space-sm text-primary">
+<span class="material-symbols-outlined text-[20px]">new_label</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold whitespace-nowrap">Label Baru:</span>
+</div>
+<div class="flex-1 w-full relative">
+<input class="w-full h-9 px-space-md rounded-lg bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none focus:bg-surface-container" id="input-new-label-name" placeholder="Misal: Retur Barang, Saran Fitur..." type="text">
+</div>
+<div class="flex items-center gap-space-xs w-full sm:w-auto justify-end">
+<button class="h-9 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm transition-colors" id="btn-cancel-new-label" type="button">
+            Batal
+          </button>
+<button class="h-9 px-space-lg rounded-lg bg-primary hover:bg-primary-fixed-dim text-on-primary font-label-sm text-label-sm font-semibold flex items-center gap-space-xs transition-colors shadow-sm" id="btn-save-new-label" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span class="">Simpan Label</span>
+</button>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col sm:flex-row items-center justify-between gap-space-md shadow-md mt-space-sm">
+<button class="w-full sm:w-auto h-10 px-space-lg rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center justify-center gap-space-sm transition-colors" id="btn-prev" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span class="">Sebelumnya</span>
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-highest text-outline">A</kbd>
+</button>
+<button class="w-full sm:w-auto h-10 px-space-lg rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center justify-center gap-space-sm transition-colors" id="btn-skip" type="button">
+<span class="material-symbols-outlined text-[18px]">skip_next</span>
+<span class="">Lewati</span>
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-highest text-outline">S</kbd>
+</button>
+<button class="w-full sm:w-auto h-10 px-space-xl rounded-lg bg-primary hover:bg-primary-fixed-dim text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-space-sm transition-all shadow-md" id="btn-submit-next" type="button">
+<span class="">Simpan &amp; Lanjut ke Teks Berikutnya</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-on-primary-container text-primary font-bold">Space / Enter</kbd>
+</button>
+</section>
+<div class="flex items-center justify-center gap-space-lg text-on-surface-variant font-code-sm text-code-sm py-space-xs opacity-75">
+<span class="flex items-center gap-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-high text-primary">1-5</kbd> Pilih
+      </span>
+<span class="">•</span>
+<span class="flex items-center gap-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-high text-primary">A</kbd> Kembali
+      </span>
+<span class="">•</span>
+<span class="flex items-center gap-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-high text-primary">S</kbd> Lewati
+      </span>
+<span class="">•</span>
+<span class="flex items-center gap-space-xs">
+<kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-high text-primary">Space</kbd> Simpan
+      </span>
+</div>
+</div>
+<div class="fixed bottom-6 right-6 translate-y-16 opacity-0 pointer-events-none transition-all duration-300 bg-surface-container-highest text-on-surface px-space-lg py-space-md rounded-lg shadow-xl flex items-center gap-space-sm font-body-sm text-body-sm z-50" id="toast-notification">
+<span class="material-symbols-outlined text-secondary text-[20px]" id="toast-icon">check_circle</span>
+<span id="toast-message" class="">Label tersimpan</span>
+</div>
+</div>
+<script>
+  (() => {
+    let activeLabel = null;
+    let timerSeconds = 14;
+
+    const timerEl = document.getElementById('session-timer');
+    setInterval(() => {
+      timerSeconds++;
+      const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+      const secs = String(timerSeconds % 60).padStart(2, '0');
+      if (timerEl) timerEl.textContent = `${mins}:${secs}s`;
+    }, 1000);
+
+    const labelButtons = document.querySelectorAll('.label-choice');
+    const selectedBadge = document.getElementById('selected-badge');
+    const selectedBadgeLabel = document.getElementById('selected-badge-label');
+    const noTagPrompt = document.getElementById('no-tag-prompt');
+    const statusPill = document.getElementById('sample-status-pill');
+    const btnRemoveTag = document.getElementById('btn-remove-tag');
+    const toast = document.getElementById('toast-notification');
+    const toastMsg = document.getElementById('toast-message');
+
+    function showToast(message, isSuccess = true) {
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+      }, 2000);
+    }
+
+    function setLabel(btn) {
+      if (!btn) return;
+      const labelName = btn.getAttribute('data-label-name');
+      const colorBg = btn.getAttribute('data-color-bg');
+      const colorText = btn.getAttribute('data-color-text');
+
+      activeLabel = labelName;
+
+      labelButtons.forEach(b => {
+        b.classList.remove('ring-2', 'ring-primary', 'bg-surface-container-high');
+      });
+      btn.classList.add('bg-surface-container-high');
+
+      noTagPrompt.classList.add('hidden');
+      selectedBadge.className = `flex items-center gap-space-xs px-space-md py-space-2xs rounded-lg font-label-sm text-label-sm ${colorBg} ${colorText} shadow-sm`;
+      selectedBadgeLabel.textContent = labelName;
+
+      statusPill.textContent = 'Terlabeli';
+      statusPill.className = 'inline-flex items-center px-space-md py-space-2xs rounded-full bg-secondary-container/30 text-secondary font-label-sm text-label-sm uppercase tracking-wider font-semibold';
+
+      showToast(`Label "${labelName}" dipilih`);
+    }
+
+    function clearLabel() {
+      activeLabel = null;
+      labelButtons.forEach(b => {
+        b.classList.remove('bg-surface-container-high');
+      });
+      selectedBadge.classList.add('hidden');
+      noTagPrompt.classList.remove('hidden');
+
+      statusPill.textContent = 'Belum Dilabeli';
+      statusPill.className = 'inline-flex items-center px-space-md py-space-2xs rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider';
+    }
+
+    labelButtons.forEach(btn => {
+      btn.addEventListener('click', () => setLabel(btn));
+    });
+
+    btnRemoveTag?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      clearLabel();
+      showToast('Label dihapus');
+    });
+
+    // Quick add label handling
+    const openAddBtn = document.getElementById('btn-open-new-label');
+    const quickAddPanel = document.getElementById('quick-add-panel');
+    const cancelAddBtn = document.getElementById('btn-cancel-new-label');
+    const saveAddBtn = document.getElementById('btn-save-new-label');
+    const inputNewLabel = document.getElementById('input-new-label-name');
+    const labelGrid = document.getElementById('label-buttons-grid');
+
+    openAddBtn?.addEventListener('click', () => {
+      quickAddPanel?.classList.toggle('hidden');
+      quickAddPanel?.classList.toggle('flex');
+      if (!quickAddPanel?.classList.contains('hidden')) {
+        inputNewLabel?.focus();
+      }
+    });
+
+    cancelAddBtn?.addEventListener('click', () => {
+      quickAddPanel?.classList.add('hidden');
+      quickAddPanel?.classList.remove('flex');
+      if (inputNewLabel) inputNewLabel.value = '';
+    });
+
+    function saveCustomLabel() {
+      const val = inputNewLabel?.value.trim();
+      if (!val) return;
+
+      const newIndex = document.querySelectorAll('.label-choice').length + 1;
+      const newBtn = document.createElement('button');
+      newBtn.type = 'button';
+      newBtn.setAttribute('data-label-id', String(newIndex));
+      newBtn.setAttribute('data-label-name', val);
+      newBtn.setAttribute('data-color-bg', 'bg-tertiary-container/30');
+      newBtn.setAttribute('data-color-text', 'text-tertiary');
+      newBtn.className = 'label-choice group relative flex flex-col items-start p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all text-left shadow-sm';
+      newBtn.innerHTML = `
+        <div class="flex items-center justify-between w-full mb-space-xs">
+          <kbd class="font-kbd-badge text-kbd-badge px-space-xs py-space-2xs rounded bg-surface-container-highest text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">${newIndex}</kbd>
+          <span class="w-2 h-2 rounded-full bg-tertiary"></span>
+        </div>
+        <span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-tertiary transition-colors">${val}</span>
+        <span class="font-label-sm text-label-sm text-on-surface-variant mt-space-2xs">Kustom</span>
+      `;
+
+      newBtn.addEventListener('click', () => setLabel(newBtn));
+      labelGrid?.insertBefore(newBtn, openAddBtn);
+
+      inputNewLabel.value = '';
+      quickAddPanel?.classList.add('hidden');
+      quickAddPanel?.classList.remove('flex');
+      setLabel(newBtn);
+      showToast(`Label baru "${val}" dibuat!`);
+    }
+
+    saveAddBtn?.addEventListener('click', saveCustomLabel);
+    inputNewLabel?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveCustomLabel();
+      } else if (e.key === 'Escape') {
+        cancelAddBtn?.click();
+      }
+    });
+
+    // Pagination Actions
+    const submitNextBtn = document.getElementById('btn-submit-next');
+    const prevBtn = document.getElementById('btn-prev');
+    const skipBtn = document.getElementById('btn-skip');
+
+    submitNextBtn?.addEventListener('click', () => {
+      if (!activeLabel) {
+        showToast('Pilih label terlebih dahulu atau tekan Lewati [S]');
+        return;
+      }
+      showToast(`Data #142 disimpan sebagai "${activeLabel}". Melanjutkan...`);
+    });
+
+    skipBtn?.addEventListener('click', () => {
+      showToast('Data #142 dilewati.');
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      showToast('Kembali ke Data #141.');
+    });
+
+    // Hotkey listener
+    window.addEventListener('keydown', (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+
+      const key = e.key.toUpperCase();
+      if (['1', '2', '3', '4', '5'].includes(e.key)) {
+        const btn = document.querySelector(`.label-choice[data-label-id="${e.key}"]`);
+        if (btn) setLabel(btn);
+      } else if (key === 'A') {
+        prevBtn?.click();
+      } else if (key === 'S') {
+        skipBtn?.click();
+      } else if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        submitNextBtn?.click();
+      }
+    });
+  })();
+</script></main><footer class="w-full bg-surface-container-lowest/60 py-space-lg mt-space-2xl"><div class="w-full px-gutter-desktop flex flex-col sm:flex-row items-center justify-between gap-space-sm font-label-sm text-label-sm text-on-surface-variant"><div class="flex items-center gap-space-md"><span class="">TagForge Minimal</span><span class="">•</span></div><div class="flex items-center gap-space-lg"><span class="text-secondary font-code-sm text-code-sm">Auto-save: OK</span></div></div></footer>
+
+</body></html>

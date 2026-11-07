@@ -66,7 +66,7 @@ def detect_capslock(text: str) -> int:
     return 1 if len(words) >= 1 else 0
 
 def load_targets(filename: str) -> list:
-    """Membaca daftar URL Threads dari file teks."""
+    """Membaca dan menormalisasi daftar URL Threads dari file teks."""
     if not os.path.exists(filename):
         print(f"[!] File target '{filename}' tidak ditemukan.")
         return []
@@ -77,10 +77,25 @@ def load_targets(filename: str) -> list:
     targets = []
     for line in lines:
         cleaned = line.strip()
-        if cleaned and not cleaned.startswith("#") and ("threads.net" in cleaned or "threads.com" in cleaned):
-            # Normalisasi threads.com ke domain resmi threads.net
-            normalized_url = cleaned.replace("threads.com", "threads.net")
+        # Lewati baris kosong atau komentar
+        if not cleaned or cleaned.startswith("#"):
+            continue
+
+        # Ekstrak URL valid (mengabaikan awalan '1. ', '2) ', '- ', '[1]', dsb.)
+        match = re.search(r"https?://(?:www\.)?threads\.(?:net|com)/[^\s]+", cleaned)
+        if match:
+            url = match.group(0).rstrip(".,;)\"'>")
+            # Normalisasi domain threads.com ke domain resmi threads.net
+            normalized_url = url.replace("threads.com", "threads.net")
             targets.append(normalized_url)
+        else:
+            # Fallback jika URL dimasukkan tanpa awalan http/https
+            match_no_proto = re.search(r"(?:www\.)?threads\.(?:net|com)/[^\s]+", cleaned)
+            if match_no_proto:
+                url = "https://" + match_no_proto.group(0).rstrip(".,;)\"'>")
+                normalized_url = url.replace("threads.com", "threads.net")
+                targets.append(normalized_url)
+
     return targets
 
 def ensure_csv_exists():
@@ -205,10 +220,28 @@ def run_login():
         print("    py scraper_threads.py\n")
         browser.close()
 
-def scrape_threads_url(page, url: str, max_scrolls: int = 6):
+def parse_metric_number(val_str: str) -> int:
+    """Mengubah format angka teks Threads (misal: '1,7 rb', '2.5k', '450') menjadi integer."""
+    if not val_str:
+        return 0
+    val_str = str(val_str).strip().lower().replace("\xa0", " ")
+    try:
+        if "rb" in val_str or "k" in val_str:
+            num_part = re.sub(r"[^\d,\.]", "", val_str).replace(",", ".")
+            return int(float(num_part) * 1000)
+        elif "jt" in val_str or "m" in val_str:
+            num_part = re.sub(r"[^\d,\.]", "", val_str).replace(",", ".")
+            return int(float(num_part) * 1000000)
+        else:
+            num_part = re.sub(r"[^\d]", "", val_str)
+            return int(num_part) if num_part else 0
+    except Exception:
+        return 0
+
+def scrape_threads_url(page, url: str, max_scrolls: int = 10):
     """
-    Membuka URL Threads, menunggu konten dirender, melakukan scroll
-    untuk memuat balasan, dan mengekstrak postingan utama serta komentar.
+    Membuka URL Threads, menunggu konten dirender, melakukan scroll adaptif
+    (berhenti otomatis saat komentar habis), dan mengekstrak metrik likes & replies.
     """
     print(f"\n[*] Mengakses: {url}")
     post_id = parse_post_id(url)
@@ -219,13 +252,25 @@ def scrape_threads_url(page, url: str, max_scrolls: int = 6):
         print(f"[!] Gagal memuat halaman: {e}")
         return []
 
-    time.sleep(3)  # Jeda render awal
+    time.sleep(2.5)  # Jeda render awal
     
-    # Scroll ke bawah secara bertahap agar komentar balasan dimuat
+    # Scroll adaptif ke bawah: berhenti otomatis jika komentar sudah habis
+    last_height = page.evaluate("document.body.scrollHeight")
+    consecutive_no_change = 0
     for i in range(max_scrolls):
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        print(f"[*] Melakukan scroll ({i+1}/{max_scrolls}) untuk memuat balasan...")
-        time.sleep(2.5)
+        print(f"[*] Melakukan scroll adaptif ({i+1}/{max_scrolls})...")
+        time.sleep(2.2)
+
+        new_height = page.evaluate("document.body.scrollHeight")
+        if new_height == last_height:
+            consecutive_no_change += 1
+            if consecutive_no_change >= 2:
+                print(f"[i] Komentar sudah habis termuat (berhenti di scroll ke-{i+1}).")
+                break
+        else:
+            consecutive_no_change = 0
+            last_height = new_height
 
     items = []
     
@@ -235,8 +280,8 @@ def scrape_threads_url(page, url: str, max_scrolls: int = 6):
         post_elements = page.query_selector_all('div[data-pressable-container="true"], article')
         if post_elements:
             first_elem = post_elements[0]
-            root_text = first_elem.inner_text().strip()
-            lines = [l for l in root_text.split("\n") if l.strip() and not l.lower() in ["balas", "bagikan", "suka", "threads"]]
+            raw_root = first_elem.inner_text().strip()
+            lines = [l for l in raw_root.split("\n") if l.strip() and not l.lower() in ["balas", "bagikan", "suka", "threads"]]
             root_text = " ".join(lines[:4])
     except Exception as e:
         print(f"[!] Catatan saat ekstraksi postingan utama: {e}")
@@ -261,13 +306,46 @@ def scrape_threads_url(page, url: str, max_scrolls: int = 6):
                 continue
 
             lines = [l.strip() for l in raw_content.split("\n") if l.strip()]
-            filtered_lines = [l for l in lines if l.lower() not in ["balas", "bagikan", "suka", "repost", "threads", "ikuti", "follow"]]
+            filtered_lines = [
+                l for l in lines 
+                if l.lower() not in ["balas", "bagikan", "suka", "repost", "threads", "ikuti", "follow", "terjemahkan", "populer", "lihat aktivitas", "belum ada balasan"]
+                and not l.lower().startswith("balas ke")
+            ]
             if not filtered_lines:
                 continue
 
-            comment_body = " ".join(filtered_lines)
+            raw_joined = " ".join(filtered_lines)
+
+            # Ekstraksi metrik (likes & replies) dan pembersihan teks komentar
+            like_count = 0
+            reply_count = 0
+            clean_comment = raw_joined
+
+            if idx == 0 and not root_saved:
+                # Postingan Utama
+                m_root = re.search(r'(\d+(?:[,\.]\d+)?\s*(?:rb|k|jt|m)?)\s+(\d+)\s*(?:\d+\s+)?(?:\d+\s+)?(?:Populer|Lihat aktivitas|Balas ke.*)?$', raw_joined)
+                if m_root:
+                    like_count = parse_metric_number(m_root.group(1))
+                    reply_count = parse_metric_number(m_root.group(2))
+                    clean_comment = raw_joined[:m_root.start()].strip()
+            else:
+                # Komentar Balasan
+                m_two = re.search(r'(\d+(?:[,\.]\d+)?\s*(?:rb|k)?)\s+(\d+)\s*$', raw_joined)
+                if m_two:
+                    like_count = parse_metric_number(m_two.group(1))
+                    reply_count = parse_metric_number(m_two.group(2))
+                    clean_comment = raw_joined[:m_two.start()].strip()
+                else:
+                    m_one = re.search(r'(\d+(?:[,\.]\d+)?\s*(?:rb|k)?)\s*$', raw_joined)
+                    if m_one:
+                        like_count = parse_metric_number(m_one.group(1))
+                        clean_comment = raw_joined[:m_one.start()].strip()
+
+            clean_comment = re.sub(r'\s*Terjemahkan\s*$', '', clean_comment).strip()
+            if not clean_comment:
+                clean_comment = raw_joined
             
-            text_hash = hashlib.md5(comment_body.encode()).hexdigest()
+            text_hash = hashlib.md5(clean_comment.encode()).hexdigest()
             if text_hash in seen_texts:
                 continue
             seen_texts.add(text_hash)
@@ -282,26 +360,21 @@ def scrape_threads_url(page, url: str, max_scrolls: int = 6):
                 parent_text = "null"
                 root_saved = True
 
-            like_count = 0
-            like_match = re.search(r"(\d+)\s*(suka|likes)", raw_content, re.IGNORECASE)
-            if like_match:
-                like_count = int(like_match.group(1))
-
             comment_item = {
                 "comment_id": f"TH_{post_id}_{idx:03d}",
                 "platform": "threads",
                 "search_keyword": "mental health",
                 "post_id": post_id,
                 "post_title": root_text,
-                "comment_text": comment_body,
+                "comment_text": clean_comment,
                 "parent_id": parent_id,
                 "parent_text": parent_text,
                 "is_reply": is_reply,
                 "created_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "like_count": like_count,
-                "reply_count": 0,
-                "emojis": extract_emojis(comment_body),
-                "has_capslock": detect_capslock(comment_body),
+                "reply_count": reply_count,
+                "emojis": extract_emojis(clean_comment),
+                "has_capslock": detect_capslock(clean_comment),
                 "is_sarcasm": "",
                 "actual_sentiment": "",
                 "topic_category": ""
