@@ -26,7 +26,7 @@ import urllib.parse
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Callable, Optional
 
-from sources.base import BaseScraper, OUTPUT_CSV
+from sources.base import BaseScraper, OUTPUT_CSV, safe_launch_browser
 
 SESSION_FILE = "reddit_session.json"
 HISTORY_FILE = "target_sudah scrapping_reddit.txt"
@@ -329,27 +329,11 @@ class RedditScraper(BaseScraper):
             "--ignore-certificate-errors-spki-list"
         ]
 
-        browser = None
-        for channel_name in ["chrome", "msedge", None]:
-            try:
-                if channel_name:
-                    browser = playwright_instance.chromium.launch(
-                        headless=headless,
-                        channel=channel_name,
-                        args=launch_args
-                    )
-                else:
-                    browser = playwright_instance.chromium.launch(
-                        headless=headless,
-                        args=launch_args
-                    )
-                if browser:
-                    break
-            except Exception:
-                continue
-
-        if not browser:
-            browser = playwright_instance.chromium.launch(headless=headless, args=launch_args)
+        browser = safe_launch_browser(
+            playwright_instance,
+            headless=headless,
+            args=launch_args
+        )
 
         context = browser.new_context(
             viewport={"width": 1280, "height": 800},

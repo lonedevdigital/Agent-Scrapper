@@ -22,7 +22,7 @@ from sources.twitter_scraper import TwitterScraper
 from sources.youtube_scraper import YouTubeScraper
 from sources.reddit_scraper import RedditScraper
 from sources.instagram_scraper import InstagramScraper
-from sources.base import OUTPUT_CSV
+from sources.base import OUTPUT_CSV, auto_install_playwright_browsers
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
@@ -863,7 +863,7 @@ class ScraperApp(ctk.CTk):
         # ==========================================
         self.sidebar_frame = ctk.CTkFrame(self, width=240, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, sticky="nsew", padx=0, pady=0)
-        self.sidebar_frame.grid_rowconfigure(8, weight=1)
+        self.sidebar_frame.grid_rowconfigure(9, weight=1)
 
         self.logo_label = ctk.CTkLabel(
             self.sidebar_frame,
@@ -948,15 +948,25 @@ class ScraperApp(ctk.CTk):
         )
         self.btn_login.grid(row=7, column=0, padx=20, pady=(15, 6), sticky="ew")
 
+        # Tombol Install Browser Engine Playwright
+        self.btn_install_browser = ctk.CTkButton(
+            self.sidebar_frame,
+            text="🌐 Install Browser Engine",
+            fg_color="#334155",
+            hover_color="#475569",
+            command=self._start_browser_install
+        )
+        self.btn_install_browser.grid(row=8, column=0, padx=20, pady=6, sticky="ew")
+
         # Pengaturan Tampilan Tema
         self.theme_label = ctk.CTkLabel(self.sidebar_frame, text="Tema:", text_color="gray")
-        self.theme_label.grid(row=9, column=0, padx=20, pady=(10, 0), sticky="w")
+        self.theme_label.grid(row=10, column=0, padx=20, pady=(10, 0), sticky="w")
         self.theme_menu = ctk.CTkOptionMenu(
             self.sidebar_frame,
             values=["Dark", "Light", "System"],
             command=ctk.set_appearance_mode
         )
-        self.theme_menu.grid(row=10, column=0, padx=20, pady=(0, 20), sticky="ew")
+        self.theme_menu.grid(row=11, column=0, padx=20, pady=(0, 20), sticky="ew")
 
         # ==========================================
         # KONTEN UTAMA (KANAN)
@@ -1309,6 +1319,19 @@ class ScraperApp(ctk.CTk):
             self.btn_login.configure(state="normal")
 
         threading.Thread(target=login_worker, daemon=True).start()
+
+    def _start_browser_install(self):
+        def install_worker():
+            self.btn_install_browser.configure(state="disabled", text="⏳ Mengunduh Engine...")
+            self.log_message("\n[Browser Engine] Memeriksa & mengunduh Chromium Playwright...")
+            success = auto_install_playwright_browsers(log_func=self.log_message)
+            if success:
+                self.log_message("[✓] Browser Engine Playwright siap digunakan!")
+            else:
+                self.log_message("[i] Sistem otomatis menggunakan peramban Microsoft Edge / Google Chrome bawaan Windows.")
+            self.btn_install_browser.configure(state="normal", text="🌐 Install Browser Engine")
+
+        threading.Thread(target=install_worker, daemon=True).start()
 
     def _save_active_keyword(self):
         """Menyimpan keyword yang diketik menjadi keyword aktif yang disimpan ke file dan sesi."""

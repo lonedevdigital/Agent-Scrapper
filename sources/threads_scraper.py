@@ -14,7 +14,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Callable, Optional
 from playwright.sync_api import sync_playwright
 
-from sources.base import BaseScraper, OUTPUT_CSV
+from sources.base import BaseScraper, OUTPUT_CSV, safe_launch_browser
 
 SESSION_FILE = "threads_session.json"
 HISTORY_FILE = "target_sudah scrapping.txt"
@@ -93,26 +93,11 @@ class ThreadsScraper(BaseScraper):
             "--ignore-certificate-errors-spki-list"
         ]
 
-        browser = None
-        for channel_name in ["chrome", "msedge", None]:
-            try:
-                if channel_name:
-                    browser = playwright_instance.chromium.launch(
-                        headless=headless,
-                        channel=channel_name,
-                        args=launch_args
-                    )
-                else:
-                    browser = playwright_instance.chromium.launch(
-                        headless=headless,
-                        args=launch_args
-                    )
-                break
-            except Exception:
-                continue
-
-        if browser is None:
-            browser = playwright_instance.chromium.launch(headless=headless, args=launch_args)
+        browser = safe_launch_browser(
+            playwright_instance,
+            headless=headless,
+            args=launch_args
+        )
 
         context_kwargs = {
             "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",

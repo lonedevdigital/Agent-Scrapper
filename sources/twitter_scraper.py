@@ -19,7 +19,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Callable, Optional
 from playwright.sync_api import sync_playwright
 
-from sources.base import BaseScraper, OUTPUT_CSV
+from sources.base import BaseScraper, OUTPUT_CSV, safe_launch_persistent_context
 
 SESSION_FILE = "twitter_session.json"
 HISTORY_FILE = "target_sudah scrapping_twitter.txt"
@@ -110,38 +110,17 @@ class TwitterScraper(BaseScraper):
             "--disable-features=IsolateOrigins,site-per-process",
         ]
 
-        context = None
-        for channel_name in ["chrome", "msedge", None]:
-            try:
-                kwargs = {
-                    "user_data_dir": self.user_data_dir,
-                    "headless": headless,
-                    "args": launch_args,
-                    "ignore_default_args": ["--enable-automation"],
-                    "viewport": {"width": 1280, "height": 800},
-                    "locale": "id-ID",
-                    "timezone_id": "Asia/Jakarta",
-                    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-                }
-                if channel_name:
-                    kwargs["channel"] = channel_name
-
-                context = playwright_instance.chromium.launch_persistent_context(**kwargs)
-                break
-            except Exception:
-                continue
-
-        if context is None:
-            context = playwright_instance.chromium.launch_persistent_context(
-                user_data_dir=self.user_data_dir,
-                headless=headless,
-                args=launch_args,
-                ignore_default_args=["--enable-automation"],
-                viewport={"width": 1280, "height": 800},
-                locale="id-ID",
-                timezone_id="Asia/Jakarta",
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-            )
+        context = safe_launch_persistent_context(
+            playwright_instance,
+            user_data_dir=self.user_data_dir,
+            headless=headless,
+            args=launch_args,
+            ignore_default_args=["--enable-automation"],
+            viewport={"width": 1280, "height": 800},
+            locale="id-ID",
+            timezone_id="Asia/Jakarta",
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+        )
 
         context.add_init_script("""
             // Hapus navigator.webdriver sepenuhnya

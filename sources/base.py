@@ -8,6 +8,7 @@ anonimisasi ID etika riset UU PDP), dan penyimpanan incremental ke CSV.
 import os
 import re
 import hashlib
+import subprocess
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Callable, Optional
 import pandas as pd
@@ -135,3 +136,117 @@ class BaseScraper(ABC):
     ) -> List[Dict[str, Any]]:
         """Metode abstrak untuk scraping secara batch dengan dukungan callback status & pembatalan."""
         pass
+
+
+def auto_install_playwright_browsers(log_func: Optional[Callable[[str], None]] = None) -> bool:
+    """
+    Mengunduh dan memasang Chromium untuk Playwright secara otomatis jika
+    tidak ditemukan browser lokal (Edge/Chrome).
+    Dapat berjalan baik pada mode Python biasa maupun file executable (.exe) mandiri.
+    """
+    def log(msg):
+        if log_func:
+            log_func(msg)
+        else:
+            print(msg)
+
+    log("[i] Memeriksa & mengunduh browser Chromium Playwright otomatis...")
+    try:
+        from playwright._impl._driver import compute_driver_executable
+        driver_exec, driver_cli = compute_driver_executable()
+        cmd = [driver_exec, driver_cli, "install", "chromium"]
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+        if proc.returncode == 0:
+            log("[✓] Browser Chromium Playwright berhasil dipasang!")
+            return True
+        else:
+            log(f"[!] Gagal memasang browser Playwright: {proc.stderr or proc.stdout}")
+            return False
+    except Exception as e:
+        log(f"[!] Terjadi kesalahan saat auto-install Playwright: {e}")
+        return False
+
+
+def safe_launch_browser(
+    playwright_instance,
+    headless: bool = True,
+    args: Optional[List[str]] = None,
+    log_func: Optional[Callable[[str], None]] = None,
+    **kwargs
+):
+    """
+    Meluncurkan browser Chromium dengan urutan fallback cerdas:
+    1. 'msedge' (Bawaan Windows 10/11 - langsung jalan tanpa download)
+    2. 'chrome' (Google Chrome jika terpasang di sistem pengguna)
+    3. None (Chromium Playwright jika sudah ada di sistem)
+    4. Auto-install Chromium via driver internal Playwright jika belum ada browser sama sekali.
+    """
+    launch_args = args or [
+        "--disable-blink-features=AutomationControlled",
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
+    ]
+
+    base_kwargs = dict(kwargs)
+    base_kwargs["headless"] = headless
+    base_kwargs["args"] = launch_args
+
+    # Coba channel browser bawaan terlebih dahulu (msedge diutamakan karena bawaan Windows)
+    for channel in ["msedge", "chrome", None]:
+        try:
+            curr_kwargs = base_kwargs.copy()
+            if channel:
+                curr_kwargs["channel"] = channel
+            browser = playwright_instance.chromium.launch(**curr_kwargs)
+            if log_func and channel:
+                log_func(f"[i] Menggunakan peramban sistem: {channel.upper()}")
+            return browser
+        except Exception:
+            continue
+
+    if log_func:
+        log_func("[!] Browser lokal (Edge/Chrome) tidak ditemukan. Memasang Chromium Playwright otomatis...")
+    auto_install_playwright_browsers(log_func=log_func)
+    return playwright_instance.chromium.launch(**base_kwargs)
+
+
+def safe_launch_persistent_context(
+    playwright_instance,
+    user_data_dir: str,
+    headless: bool = True,
+    args: Optional[List[str]] = None,
+    log_func: Optional[Callable[[str], None]] = None,
+    **kwargs
+):
+    """
+    Meluncurkan persistent context Chromium dengan fallback bertingkat:
+    msedge -> chrome -> default Playwright -> auto-install.
+    """
+    launch_args = args or [
+        "--disable-blink-features=AutomationControlled",
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
+    ]
+
+    base_kwargs = dict(kwargs)
+    base_kwargs["user_data_dir"] = user_data_dir
+    base_kwargs["headless"] = headless
+    base_kwargs["args"] = launch_args
+
+    for channel in ["msedge", "chrome", None]:
+        try:
+            curr_kwargs = base_kwargs.copy()
+            if channel:
+                curr_kwargs["channel"] = channel
+            context = playwright_instance.chromium.launch_persistent_context(**curr_kwargs)
+            if log_func and channel:
+                log_func(f"[i] Menggunakan peramban sistem (persistent): {channel.upper()}")
+            return context
+        except Exception:
+            continue
+
+    if log_func:
+        log_func("[!] Browser lokal (Edge/Chrome) tidak ditemukan. Memasang Chromium Playwright otomatis...")
+    auto_install_playwright_browsers(log_func=log_func)
+    return playwright_instance.chromium.launch_persistent_context(**base_kwargs)
+

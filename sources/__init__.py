@@ -1,4 +1,11 @@
-from sources.base import BaseScraper, OUTPUT_CSV, COLUMNS
+from sources.base import (
+    BaseScraper,
+    OUTPUT_CSV,
+    COLUMNS,
+    safe_launch_browser,
+    safe_launch_persistent_context,
+    auto_install_playwright_browsers
+)
 from sources.threads_scraper import ThreadsScraper
 from sources.twitter_scraper import TwitterScraper
 from sources.youtube_scraper import YouTubeScraper
@@ -13,6 +20,9 @@ __all__ = [
     "RedditScraper",
     "InstagramScraper",
     "OUTPUT_CSV",
-    "COLUMNS"
+    "COLUMNS",
+    "safe_launch_browser",
+    "safe_launch_persistent_context",
+    "auto_install_playwright_browsers"
 ]
 

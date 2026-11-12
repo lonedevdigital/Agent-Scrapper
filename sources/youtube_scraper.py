@@ -17,7 +17,7 @@ from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Any, Callable, Optional
 from playwright.sync_api import sync_playwright
 
-from sources.base import BaseScraper, OUTPUT_CSV
+from sources.base import BaseScraper, OUTPUT_CSV, safe_launch_browser
 
 HISTORY_FILE = "target_sudah scrapping_youtube.txt"
 TARGETS_FILE = "targets_youtube.txt"
@@ -410,13 +410,15 @@ class YouTubeScraper(BaseScraper):
         total_batches = (total_targets + batch_size - 1) // batch_size
 
         with sync_playwright() as p:
-            browser = p.chromium.launch(
+            browser = safe_launch_browser(
+                p,
                 headless=True,
                 args=[
                     "--disable-blink-features=AutomationControlled",
                     "--no-sandbox",
                     "--disable-setuid-sandbox"
-                ]
+                ],
+                log_func=log
             )
             context = browser.new_context(
                 viewport={"width": 1280, "height": 800},
