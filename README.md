@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/lonedevdigital/Agent-Scrapper?color=orange)](https://github.com/lonedevdigital/Agent-Scrapper/releases)
 
-Sistem ekstraksi data media sosial multi-platform terpadu (*Threads*, *X / Twitter*, *Reddit*, dan *YouTube*) yang dirancang khusus untuk riset **Analisis Sentimen, Deteksi Sarkasme, dan Klasifikasi Kesehatan Mental (*Mental Health*)** di Indonesia. Dilengkapi antarmuka grafis modern (**CustomTkinter GUI**), mesin perayap anti-deteksi bot (*Deep Stealth & Persistent Context*), sistem checkpoint inkremental anti-kehilangan data, serta workstation anotasi data (**TagForge Labeling Engine**).
+Sistem ekstraksi data media sosial multi-platform terpadu (*Threads*, *X / Twitter*, *YouTube*, *Reddit*, dan *Instagram*) yang dirancang khusus untuk riset **Analisis Sentimen, Deteksi Sarkasme, dan Klasifikasi Kesehatan Mental (*Mental Health*)** di Indonesia. Dilengkapi antarmuka grafis modern (**CustomTkinter GUI v2.0.1**), mesin perayap anti-deteksi bot (*Deep Stealth & Persistent Context*), sistem checkpoint inkremental anti-kehilangan data, serta workstation anotasi data (**TagForge Labeling Engine**).
 
 ---
 
@@ -22,7 +22,9 @@ Sistem ekstraksi data media sosial multi-platform terpadu (*Threads*, *X / Twitt
 - [Tata Cara Scraping per Platform](#-tata-cara-scraping-per-platform)
   - [1. X / Twitter (Cookie Auth Token)](#1-x--twitter-cookie-auth-token)
   - [2. Threads (Meta)](#2-threads-meta)
-  - [3. Reddit (Komunitas & Forum Diskusi)](#3-reddit-komunitas--forum-diskusi)
+  - [3. YouTube (Video & Shorts)](#3-youtube-video--shorts)
+  - [4. Reddit (Komunitas & Forum Diskusi)](#4-reddit-komunitas--forum-diskusi)
+  - [5. Instagram (Reels & Posts)](#5-instagram-reels--posts)
 - [Aplikasi Anotasi (TagForge Labeling)](#-aplikasi-anotasi-tagforge-labeling)
 - [Build ke Executable (.exe)](#-build-ke-executable-exe)
 - [Etika Penelitian & Kepatuhan UU PDP](#-etika-penelitian--kepatuhan-uu-pdp)

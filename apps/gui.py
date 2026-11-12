@@ -834,7 +834,7 @@ class ScraperApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("Mental Health Research Dataset Collector")
+        self.title("Mental Health Research Dataset Collector v2.0.1")
         self.geometry("1060x740")
         self.minsize(920, 620)
 
@@ -867,7 +867,7 @@ class ScraperApp(ctk.CTk):
 
         self.logo_label = ctk.CTkLabel(
             self.sidebar_frame,
-            text="🧠 Mental Health\nData Collector",
+            text="🧠 Mental Health\nData Collector v2.0.1",
             font=ctk.CTkFont(size=18, weight="bold")
         )
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 15))
