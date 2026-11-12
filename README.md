@@ -46,31 +46,32 @@ Repositori ini menyediakan crawler cerdas yang tidak hanya mengunduh komentar, t
 | :--- | :--- | :--- | :--- |
 | **Threads (Meta)** | **Sumber Utama** | Narasi curhat personal panjang (*open-diary*), validasi emosional di kolom komentar. | Playwright Stealth Browser |
 | **X (Twitter)** | **Sumber Kedua** | Bahasa slang getir, sindiran tajam, sarkasme murni, dan reaksi spontan warganet. | Persistent Context + `auth_token` |
-| **Reddit** | **Sumber Ketiga** | Diskusi mendalam di subreddit r/indonesia, curhat anonim komprehensif tanpa batasan karakter. | Public JSON API Parser |
-| **YouTube** | **Sumber Keempat** | Refleksi emosional panjang di bawah video edukasi kesehatan mental & psikologi. | Contextual Comment Parser |
+| **YouTube** | **Sumber Ketiga** | Refleksi emosional panjang di bawah video edukasi kesehatan mental & psikologi. | Playwright Auto-Scroll Parser |
+| **Reddit** | **Sumber Keempat** | Diskusi mendalam di subreddit r/indonesia, curhat anonim komprehensif tanpa batasan karakter. | Public JSON API Parser |
+| **Instagram** | **Sumber Kelima** | Tanggapan spontan, komentar reaktif, dan reaksi audio-visual pada Reels & Posts. | Playwright Dialog Bypass Parser |
 
 ---
 
 ## 📋 Standarisasi Skema Dataset (18 Kolom)
 
-Semua perayap (*Threads, X, Reddit*) menghasilkan struktur dataset yang **100% seragam** di [`dataset_mental_health.csv`](file:///d:/KULIAH/TUGAS_AKHIR_JURNAL/dataset_mental_health.csv):
+Semua perayap (*Threads, X, YouTube, Reddit, Instagram*) menghasilkan struktur dataset yang **100% seragam** di [`dataset_mental_health.csv`](file:///d:/KULIAH/TUGAS_AKHIR_JURNAL/dataset_mental_health.csv):
 
 | No | Nama Kolom | Tipe Data | Deskripsi & Contoh |
 |:---|:---|:---|:---|
-| 1 | `comment_id` | String | ID unik record (cth: `TH_DZeUk_001`, `TW_1413544_002`, `RD_ycx1nd_001`). |
-| 2 | `platform` | String | Platform sumber: `threads`, `twitter`, `reddit`, atau `youtube`. |
+| 1 | `comment_id` | String | ID unik record (cth: `TH_DZeUk_001`, `TW_1413544_002`, `YT_r1MUHI_001`, `IG_DdQ2ou_001`, `RD_ycx1nd_001`). |
+| 2 | `platform` | String | Platform sumber: `threads`, `twitter`, `youtube`, `reddit`, atau `instagram`. |
 | 3 | `search_keyword` | String | Kata kunci penelusuran (cth: `mental health mahasiswa`). |
-| 4 | `author` | String | Handle/Username bersih penulis (cth: `@usaidasmadi_`, `rinicruzz`). |
-| 5 | `post_id` | String | ID postingan utama (cth: `TW_1413544816357650447`, `DZeUkUCGYnK`). |
-| 6 | `post_title` | String | Teks lengkap dari cuitan/postingan utama (sebagai konteks). |
+| 4 | `author` | String | Handle/Username bersih penulis (cth: `@usaidasmadi_`, `@RaymondChins`, `@kuku_kaki_kakek_ku`, `rinicruzz`). |
+| 5 | `post_id` | String | ID postingan utama (cth: `TW_1413544816357650447`, `YT_r1MUHIUkYxs`, `IG_DdQ2ouFlQwr`, `DZeUkUCGYnK`). |
+| 6 | `post_title` | String | Teks lengkap dari cuitan/video/postingan utama (sebagai konteks). |
 | 7 | `comment_text` | String | Teks isi komentar/balasan (atau teks postingan jika root). |
 | 8 | `parent_id` | String | ID induk (bernilai kosong untuk root, dan `post_id` untuk balasan). |
 | 9 | `parent_text` | String | Teks induk yang dibalas (bernilai kosong untuk root). |
 | 10 | `is_reply` | Integer | `0` = Postingan Utama (Root), `1` = Balasan / Komentar. |
 | 11 | `created_at` | String | Waktu pembuatan format ISO 8601 UTC (`YYYY-MM-DDTHH:MM:SSZ`). |
-| 12 | `like_count` | Integer | Jumlah suka / upvote (cth: `23000`). |
+| 12 | `like_count` | Integer | Jumlah suka / upvote (cth: `23000`, `2900`). |
 | 13 | `reply_count` | Integer | Jumlah balasan ke komentar tersebut. |
-| 14 | `emojis` | String | Seluruh emoji unicode yang diekstrak (cth: `😭😭😭`, `🙏`). |
+| 14 | `emojis` | String | Seluruh emoji unicode yang diekstrak (cth: `😭😭😭`, `🙏`, `🔥`). |
 | 15 | `has_capslock` | Integer | `1` jika mengandung kata kapital penuh (indikasi emosi/sarkasme), `0` jika tidak. |
 | 16 | `is_sarcasm` | Float/Empty | Nilai anotasi sarkasme (diisi saat proses labeling). |
 | 17 | `actual_sentiment`| String/Empty | Label sentimen: `Normal`, `Stress`, `Cemas`, `Depresi`. |
@@ -107,8 +108,9 @@ Semua perayap (*Threads, X, Reddit*) menghasilkan struktur dataset yang **100% s
 │   ├── base.py                 # Abstract Base Scraper & utilitas ekstraksi data
 │   ├── threads_scraper.py      # Crawler Threads (Meta)
 │   ├── twitter_scraper.py      # Crawler X (Twitter) teroptimasi
+│   ├── youtube_scraper.py      # Crawler YouTube Comments & Video Meta
 │   ├── reddit_scraper.py       # Crawler Reddit (r/indonesia, r/mentalhealth)
-│   └── youtube_scraper.py      # Crawler YouTube Comments
+│   └── instagram_scraper.py    # Crawler Instagram Reels & Posts (Auto-Bypass Modal)
 ├── Labelingapps/
 │   ├── index.html              # Antarmuka Web Labeling Workstation (TagForge)
 │   ├── app.js                  # Engine parsing, hotkeys, & ekspor CSV
@@ -173,11 +175,23 @@ Karena X (Twitter) membatasi penjelajahan komentar bagi pengguna anonim, sistem 
 3. Masukkan daftar tautan Threads ke dalam kotak input target atau muat dari `targets_threads.txt`.
 4. Klik **`▶ Mulai Scraping`**.
 
-### 3. Reddit (Komunitas & Forum Diskusi)
+### 3. YouTube (Video & Shorts)
+1. Pilih **YouTube (Ketiga)** pada menu sidebar.
+2. Akses publik (tidak membutuhkan login/kuki).
+3. Masukkan daftar tautan video YouTube (mendukung format `https://www.youtube.com/watch?v=...`, `https://youtu.be/...`, dan `https://www.youtube.com/shorts/...`) atau muat dari `targets_youtube.txt`.
+4. Klik **`▶ Mulai Scraping`**. Sistem akan mengekstrak judul video dan deskripsi sebagai Postingan Utama (Root Post), dilanjutkan dengan seluruh rantai komentar dan jumlah suka (*likes*).
+
+### 4. Reddit (Komunitas & Forum Diskusi)
 1. Pilih **Reddit (Keempat)** pada menu sidebar.
 2. Tidak memerlukan akun atau login (akses publik).
-3. Masukkan URL thread Reddit (cth: `https://www.reddit.com/r/indonesia/comments/...`).
+3. Masukkan URL thread Reddit (cth: `https://www.reddit.com/r/indonesia/comments/...`) atau muat dari `targets_reddit.txt`.
 4. Klik **`▶ Mulai Scraping`**. Seluruh thread hierarki komentar otomatis diekstrak.
+
+### 5. Instagram (Reels & Posts)
+1. Pilih **Instagram (Kelima)** pada menu sidebar.
+2. Akses publik dengan *Auto-Bypass Login Modal* (dialog login otomatis ditutup/dibersihkan).
+3. Masukkan daftar URL Reel atau Postingan Instagram (cth: `https://www.instagram.com/reel/SHORTCODE/` atau `https://www.instagram.com/p/SHORTCODE/`) atau muat dari `targets_instagram.txt`.
+4. Klik **`▶ Mulai Scraping`**. Sistem mengambil *caption* sebagai root post dan memperluas komentar secara berkala (*load more comments*) beserta stempel waktu ISO presisi.
 
 ---
 
@@ -207,3 +221,4 @@ Hasil build akan tersedia di folder `dist/MentalHealthScraper/`.
 Pengumpulan dataset ini tunduk pada etika penelitian ilmiah dan kepatuhan privasi data:
 - **UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP):** Modul crawler menyediakan fungsi `anonymize_id` (hashing SHA-256) untuk mengenkripsi identitas username menjadi kode unik anonim.
 - **Tujuan Akademis:** Dataset hanya digunakan untuk penelitian komputasi linguistik, deteksi dini krisis mental, dan analisis sentimen non-komersial.
+

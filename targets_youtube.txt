@@ -1,0 +1,8 @@
+# Masukkan URL video YouTube yang ingin di-scrape (satu URL per baris).
+# Mendukung format:
+# https://www.youtube.com/watch?v=VIDEO_ID
+# https://youtu.be/VIDEO_ID
+# https://www.youtube.com/shorts/VIDEO_ID
+
+https://www.youtube.com/watch?v=r1MUHIUkYxs
+

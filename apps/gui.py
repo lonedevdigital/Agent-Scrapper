@@ -21,6 +21,7 @@ from sources.threads_scraper import ThreadsScraper
 from sources.twitter_scraper import TwitterScraper
 from sources.youtube_scraper import YouTubeScraper
 from sources.reddit_scraper import RedditScraper
+from sources.instagram_scraper import InstagramScraper
 from sources.base import OUTPUT_CSV
 
 ctk.set_appearance_mode("Dark")
@@ -842,7 +843,8 @@ class ScraperApp(ctk.CTk):
             "Threads (Utama)": ThreadsScraper(),
             "X / Twitter (Kedua)": TwitterScraper(),
             "YouTube (Ketiga)": YouTubeScraper(),
-            "Reddit (Keempat)": RedditScraper()
+            "Reddit (Keempat)": RedditScraper(),
+            "Instagram (Kelima)": InstagramScraper()
         }
         self.current_platform = "Threads (Utama)"
         self.worker_thread = None
@@ -881,7 +883,7 @@ class ScraperApp(ctk.CTk):
 
         self.platform_menu = ctk.CTkOptionMenu(
             self.sidebar_frame,
-            values=["Threads (Utama)", "X / Twitter (Kedua)", "YouTube (Ketiga)", "Reddit (Keempat)"],
+            values=["Threads (Utama)", "X / Twitter (Kedua)", "YouTube (Ketiga)", "Reddit (Keempat)", "Instagram (Kelima)"],
             command=self._on_platform_change
         )
         self.platform_menu.set(self.current_platform)
@@ -1223,14 +1225,20 @@ class ScraperApp(ctk.CTk):
                 self.btn_search_preview.configure(state="disabled")
         elif "YouTube" in selected_platform:
             self.header_desc.configure(text="Sumber Ketiga: Curhat panjang & reflektif di bawah video edukasi mental.")
-            self.btn_login.configure(state="disabled", text="🔑 Login YouTube (N/A)")
-            self.btn_load_file.configure(state="disabled", text="📥 Muat dari File (N/A)")
+            self.btn_login.configure(state="disabled", text="🔑 Akses Publik (N/A)")
+            self.btn_load_file.configure(state="normal", text="📥 Muat dari targets_youtube.txt")
             if hasattr(self, "btn_search_preview"):
                 self.btn_search_preview.configure(state="disabled")
         elif "Reddit" in selected_platform:
             self.header_desc.configure(text="Sumber Keempat: Diskusi mendalam, curhat anonim di forum & komunitas.")
             self.btn_login.configure(state="disabled", text="🔑 Akses Publik / Anonim")
             self.btn_load_file.configure(state="normal", text="📥 Muat dari targets_reddit.txt")
+            if hasattr(self, "btn_search_preview"):
+                self.btn_search_preview.configure(state="disabled")
+        elif "Instagram" in selected_platform:
+            self.header_desc.configure(text="Sumber Kelima: Tanggapan singkat, reaksi emosional pada Reels & Posts.")
+            self.btn_login.configure(state="disabled", text="🔑 Akses Publik / Auto-Bypass")
+            self.btn_load_file.configure(state="normal", text="📥 Muat dari targets_instagram.txt")
             if hasattr(self, "btn_search_preview"):
                 self.btn_search_preview.configure(state="disabled")
 
@@ -1241,6 +1249,10 @@ class ScraperApp(ctk.CTk):
             filename = "targets_twitter.txt"
         elif "Reddit" in self.current_platform:
             filename = "targets_reddit.txt"
+        elif "YouTube" in self.current_platform:
+            filename = "targets_youtube.txt"
+        elif "Instagram" in self.current_platform:
+            filename = "targets_instagram.txt"
         else:
             filename = "targets_threads.txt"
 

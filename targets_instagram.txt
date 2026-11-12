@@ -1,0 +1,7 @@
+# Masukkan URL Reel atau Postingan Instagram yang ingin di-scrape (satu URL per baris).
+# Mendukung format:
+# https://www.instagram.com/reel/SHORTCODE/
+# https://www.instagram.com/p/SHORTCODE/
+
+https://www.instagram.com/reel/DdQ2ouFlQwr/
+
