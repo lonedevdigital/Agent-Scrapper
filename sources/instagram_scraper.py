@@ -46,7 +46,7 @@ class InstagramScraper(BaseScraper):
             if not cleaned or cleaned.startswith("#"):
                 continue
 
-            match = re.search(r"https?://(?:www\.)?instagram\.com/(?:reel|p|tv)/([A-Za-z0-9_-]+)", cleaned)
+            match = re.search(r"https?://(?:www\.)?instagram\.com/(?:reel|reels|p|tv)/([A-Za-z0-9_-]+)", cleaned)
             if match:
                 shortcode = match.group(1)
                 targets.append(f"https://www.instagram.com/reel/{shortcode}/")
@@ -72,7 +72,7 @@ class InstagramScraper(BaseScraper):
     @staticmethod
     def parse_post_id(url: str) -> str:
         """Mengekstrak shortcode postingan/reel Instagram."""
-        match = re.search(r"instagram\.com/(?:reel|p|tv)/([A-Za-z0-9_-]+)", url)
+        match = re.search(r"instagram\.com/(?:reel|reels|p|tv)/([A-Za-z0-9_-]+)", url)
         if match:
             return match.group(1)
         return "IG_" + hashlib.md5(url.encode()).hexdigest()[:8]

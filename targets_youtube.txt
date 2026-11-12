@@ -3,6 +3,8 @@
 # https://www.youtube.com/watch?v=VIDEO_ID
 # https://youtu.be/VIDEO_ID
 # https://www.youtube.com/shorts/VIDEO_ID
+# https://www.youtube.com/live/VIDEO_ID
 
 https://www.youtube.com/watch?v=r1MUHIUkYxs
+https://www.youtube.com/live/YdPhLhW3x38
 

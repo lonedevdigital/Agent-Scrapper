@@ -64,6 +64,18 @@ class YouTubeScraper(BaseScraper):
                 targets.append(f"https://www.youtube.com/watch?v={m_shorts.group(1)}")
                 continue
 
+            # Live stream link youtube.com/live/...
+            m_live = re.search(r"https?://(?:www\.)?youtube\.com/live/([a-zA-Z0-9_-]{11})", cleaned)
+            if m_live:
+                targets.append(f"https://www.youtube.com/watch?v={m_live.group(1)}")
+                continue
+
+            # Embed link youtube.com/embed/...
+            m_embed = re.search(r"https?://(?:www\.)?youtube\.com/embed/([a-zA-Z0-9_-]{11})", cleaned)
+            if m_embed:
+                targets.append(f"https://www.youtube.com/watch?v={m_embed.group(1)}")
+                continue
+
         return targets
 
     def get_already_scraped_urls(self) -> set:
@@ -85,7 +97,7 @@ class YouTubeScraper(BaseScraper):
     @staticmethod
     def parse_post_id(url: str) -> str:
         """Mengekstrak YouTube Video ID (11 karakter)."""
-        m = re.search(r"(?:v=|youtu\.be/|shorts/)([a-zA-Z0-9_-]{11})", url)
+        m = re.search(r"(?:v=|youtu\.be/|shorts/|live/|embed/)([a-zA-Z0-9_-]{11})", url)
         if m:
             return m.group(1)
         return "YT_" + hashlib.md5(url.encode()).hexdigest()[:8]
